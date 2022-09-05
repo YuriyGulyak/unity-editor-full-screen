@@ -30,6 +30,7 @@ namespace EditorUtils
             GetWindowRect(hWnd, out InitialRect);
             InitialStyle = GetWindowStyle(hWnd);
 
+            ShowWindow(hWnd, SW_NORMAL);
             SetWindowStyle(hWnd, FullscreenWindowStyle);
             SetWindowPos(hWnd, 0, 0, ScreenX, ScreenY);
         }
@@ -42,11 +43,9 @@ namespace EditorUtils
             SetWindowPos(hWnd, InitialRect.Left, InitialRect.Top, InitialRect.Width, InitialRect.Height);
         }
 
-        private static int ScreenX => 
-            GetSystemMetrics(SM_CXSCREEN);
+        private static int ScreenX => GetSystemMetrics(SM_CXSCREEN);
 
-        private static int ScreenY => 
-            GetSystemMetrics(SM_CYSCREEN);
+        private static int ScreenY => GetSystemMetrics(SM_CYSCREEN);
 
         private static int GetWindowStyle(IntPtr hWnd) =>
             GetWindowLong(hWnd, GWL_STYLE);
@@ -61,6 +60,7 @@ namespace EditorUtils
         private const int SM_CXSCREEN = 0;
         private const int SM_CYSCREEN = 1;
 
+        private const int SW_NORMAL = 1;
         private const int GWL_STYLE = -16;
         private const int SWP_SHOWWINDOW = 0x0040;
 
@@ -72,6 +72,9 @@ namespace EditorUtils
 
         [DllImport("user32.dll", EntryPoint = "GetSystemMetrics")]
         private static extern int GetSystemMetrics(int which);
+
+        [DllImport("user32.dll")]
+        private static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
 
         [DllImport("user32.dll")]
         private static extern int GetWindowLong(IntPtr hWnd, int nIndex);
